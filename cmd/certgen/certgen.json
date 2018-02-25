@@ -1,0 +1,39 @@
+{
+  "fingerprint": false,
+  "dumpcfg": true,
+  "jsoncfg": "",
+  "yamlcfg": "",
+  "debug": false,
+  "replace": false,
+  "replace-ca": false,
+  "key-ext": ".key",
+  "cert-ext": ".crt",
+  "path": "cluster/tls",
+  "ca-common": "k8s",
+  "ca-filename": "ca",
+  "ca-org": [
+    "k8s"
+  ],
+  "ca-unit": [
+    "clusterops"
+  ],
+  "cert-file": "cluster/tls/dashboard",
+  "common": "dashboard",
+  "dnsnames": [
+    "dashboard"
+  ],
+  "ips": [
+    "192.168.0.21",
+    "192.168.0.26",
+    "192.168.0.250",
+    "192.168.0.251",
+    "192.168.0.252",
+    "192.168.0.253"
+  ],
+  "org": [
+    "dashboard"
+  ],
+  "unit": [
+    "devops"
+  ]
+}
