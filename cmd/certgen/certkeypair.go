@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/kubernetes-incubator/bootkube/pkg/tlsutil"
 )
@@ -56,7 +57,7 @@ func (c *CertKeyPair) WritePemFormatCertAndKey() (err error) {
 		return
 	}
 
-	// Public key
+	// Certificate
 	if certOut, err := os.Create(c.CertFile); err == nil {
 		defer checkErr(certOut.Close)
 		if _, err = certOut.Write(tlsutil.EncodeCertificatePEM(c.Certificate)); err != nil {
@@ -74,6 +75,22 @@ func (c *CertKeyPair) WritePemFormatCertAndKey() (err error) {
 			return err
 		}
 		log.Printf("Wrote %s\n", c.KeyFile)
+	} else {
+		return err
+	}
+	// PublicKey
+	publicFile := strings.Split(c.KeyFile, app.KeyExt)[0] + ".pub"
+	if keyOut, err := os.OpenFile(publicFile,
+		os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600); err == nil {
+		defer checkErr(keyOut.Close)
+		if pem, err := tlsutil.EncodePublicKeyPEM(&c.PrivateKey.PublicKey); err != nil {
+			return err
+		} else {
+			if _, err = keyOut.Write(pem); err != nil {
+				return err
+			}
+		}
+		log.Printf("Wrote %s\n", publicFile)
 	} else {
 		return err
 	}
